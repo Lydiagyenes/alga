@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fagylalt Parlor Megoldás Dokumentáció</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        pre {
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Fagylalt Parlor Algoritmus Megoldás Dokumentáció</h1>
+
+<h2>Feladat Leírása</h2>
+<p>A feladat célja, hogy megtaláljuk azt a két fagylaltot, amelyek ára összesen megegyezik a barátok által összedobott pénzösszeggel. Mindig két különböző fagylaltot választanak, és a pénzüket teljesen elköltik. A fagylaltok árát tartalmazó lista adott, és a feladatunk megtalálni a két fagylaltot, amelyek ára éppen megegyezik a rendelkezésre álló összeggel.</p>
+
+<h2>Függvény Definíciója</h2>
+<p>A megoldás egy Python függvény formájában van megadva, amelynek neve <code>icecreamParlor</code>. A függvény két paramétert fogad:</p>
+<ul>
+    <li><code>m</code> - Az összeg, amit a barátok el szeretnének költeni.</li>
+    <li><code>arr</code> - A fagylaltok árait tartalmazó lista.</li>
+</ul>
+
+<h2>Megoldás Logikája</h2>
+<p>A probléma hatékony megoldásához egy keresési technikát alkalmazunk, amely során egy hash táblát (szótárat) használunk. Ez a megközelítés lineáris időbonyolultságú, ami optimális a nagy méretű bemenetekhez. Az algoritmus lépései:</p>
+<ol>
+    <li>Létrehozunk egy üres hash táblát, amelyben az árakat és azok indexeit tároljuk.</li>
+    <li>Végighaladunk az árak listáján, és minden egyes fagylalt áránál kiszámítjuk a különbséget (a barátok által elköltendő összeg mínusz az aktuális fagylalt ára).</li>
+    <li>Ha a különbség már megtalálható a hash táblában, akkor megtaláltuk a két fagylaltot, amelyek összegük pontosan megegyezik az összeggel. Visszaadjuk a két fagylalt indexét.</li>
+    <li>Ha nem találtuk meg a különbséget, akkor hozzáadjuk az aktuális fagylalt árát a hash táblához az indexével együtt.</li>
+</ol>
+
+<h2>Példa Kód</h2>
+<pre><code>def icecreamParlor(m, arr):
+    cost_map = {}
+    
+    for i, cost in enumerate(arr):
+        diff = m - cost
+        if diff in cost_map:
+            return [cost_map[diff] + 1, i + 1]
+        cost_map[cost] = i
+</code></pre>
+
+<h2>Példa Bemenet</h2>
+<pre><code>2
+4
+5
+1 4 5 3 2
+4
+4
+2 2 4 3
+</code></pre>
+
+<h2>Példa Kimenet</h2>
+<pre><code>1 4
+1 2
+</code></pre>
+
+<h2>Futtatás Menete</h2>
+<p>A függvényt meghívjuk a megadott bemeneti értékekkel. A bemenet tartalmazza a barátok által elköltendő összeget, a fagylaltok számát, valamint a fagylaltok árait. A függvény a megfelelő két fagylalt indexét adja vissza, amelyek árának összege pontosan megegyezik az elköltendő összeggel.</p>
+
+<h2>Megjegyzés</h2>
+<p>Ez az algoritmus kihasználja a hash táblák gyors keresési képességeit, ami lehetővé teszi, hogy a problémát lineáris időben oldjuk meg, szemben a naiv megoldással, amelynek időbonyolultsága négyzetes lenne.</p>
+
+</body>
+</html>

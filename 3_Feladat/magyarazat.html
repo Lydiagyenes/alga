@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandragora Kalandja - Megoldás Magyarázata és Dokumentáció</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        pre {
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Mandragora Kalandja - Megoldás Magyarázata és Dokumentáció</h1>
+
+<h2>Bevezetés</h2>
+<p>A mandragórák által őrzött gonosz erdőben Garnet és kedvenc állata egy izgalmas kaland elé néznek. A feladat célja, hogy meghatározzuk, hogyan maximalizálhatja Garnet a tapasztalati pontjait az erdőben található mandragórák legyőzésével. Az alábbiakban részletesen bemutatjuk a megoldás folyamatát, a logikát, valamint a kód működését.</p>
+
+<h2>Feladat Összegzése</h2>
+<p>Garnetnek két lehetősége van minden mandragóra esetében:</p>
+<ol>
+    <li><strong>Mandragóra megevése</strong>: Növeli az egészségpontját (s) 1-el, de nem szerez tapasztalati pontot.</li>
+    <li><strong>Mandragóra legyőzése</strong>: Tapasztalati pontot szerez, amelyet a jelenlegi egészségpontjainak (s) és a mandragóra egészségértékének (H[i]) szorzataként számolunk ki.</li>
+</ol>
+<p>A cél, hogy maximális tapasztalati pontokat érjünk el a mandragórák legyőzésével.</p>
+
+<h2>Algoritmus Leírása</h2>
+<ol>
+    <li><strong>Bemenet feldolgozása</strong>:
+        <ul>
+            <li>Először olvassuk be a tesztesetek számát.</li>
+            <li>Minden tesztesetnél olvassuk be a mandragórák számát és azok egészségértékeit.</li>
+        </ul>
+    </li>
+    <li><strong>Feldolgozás</strong>:
+        <ul>
+            <li>Sorba rendezzük a mandragórák egészségértékeit csökkenő sorrendbe. Ezzel garantáljuk, hogy a legerősebb mandragórák jönnek először.</li>
+            <li>Kiszámoljuk a maximális tapasztalati pontokat úgy, hogy először a legyengébb mandragórákkal foglalkozunk (azaz megeszünk annyit, amennyi szükséges a megfelelő egészségszint eléréséhez), majd a legerősebb mandragórák legyőzése következik.</li>
+        </ul>
+    </li>
+    <li><strong>Tapasztalati pontok számítása</strong>:
+        <ul>
+            <li>Kezdjük 1 egészségponttal (s = 1) és 0 tapasztalati ponttal (p = 0).</li>
+            <li>Iteráljunk a mandragórák listáján, és számítsuk ki a tapasztalati pontokat a legyőzött mandragórák alapján.</li>
+            <li>Ha Garnet megeszi a mandragórát, s értéke nő, de p nem változik.</li>
+        </ul>
+    </li>
+    <li><strong>Eredmény kiírása</strong>:
+        <ul>
+            <li>Minden teszteset eredményét kiírjuk, amely a maximális tapasztalati pontokat jelöli.</li>
+        </ul>
+    </li>
+</ol>
+
+<h2>Kód Példa</h2>
+<pre>
+def mandragora(H):
+    H.sort(reverse=True)  # Csökkenő sorrendbe rendezés
+    max_exp = 0
+    s = 1  # Kezdő egészségpont
+    p = 0  # Kezdő tapasztalati pont
+    n = len(H)
+
+    for i in range(n):
+        # Tapasztalati pontok számítása a legyőzött mandragórák alapján
+        p += s * H[i]
+        max_exp = max(max_exp, p)  # Maximális tapasztalat frissítése
+        s += 1  # Növeljük az egészségpontot
+
+    return max_exp  # Maximális tapasztalati pontok visszaadása
+</pre>
+
+<h2>Teljesítmény és Hatékonyság</h2>
+<p>A megoldás ideális esetben O(n log n) időbeli bonyolultsággal rendelkezik a mandragórák sorba rendezése miatt. A tapasztalati pontok számítása O(n) időbeli bonyolultságú, így az algoritmus hatékonyan kezeli a nagy bemeneteket.</p>
+
+<h2>Következtetés</h2>
+<p>Ez a megoldás lehetővé teszi Garnet számára, hogy maximálisan kihasználja a mandragórák legyőzéséből származó tapasztalati pontokat. A logika átlátható és hatékony, lehetővé téve a nagyobb bemeneti adatok gyors feldolgozását. A kód könnyen érthető és egyszerűen alkalmazható, biztosítva, hogy Garnet sikeresen átkeljen a gonosz erdőn.</p>
+
+</body>
+</html>

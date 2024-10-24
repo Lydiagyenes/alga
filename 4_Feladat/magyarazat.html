@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snakes and Ladders - Megoldás Dokumentáció</title>
+</head>
+<body>
+    <h1>Snakes and Ladders - Megoldás Magyarázata</h1>
+    <h2>Feladat Összefoglaló</h2>
+    <p>Markov a Snakes and Ladders (Kígyók és Létrák) játékával játszik, és elgondolkodik, hogy a legkevesebb dobás hány lehet a 1. négyzetből a 100. négyzetbe való eljutáshoz. A játék során a játékos létrákra és kígyókra is ráléphet, amelyek befolyásolják a mozgást.</p>
+    
+    <h2>Algoritmus Magyarázata</h2>
+    <p>A megoldás egy széleskörű keresési algoritmust használ, amely megoldja a Snakes and Ladders játékot a következő lépésekben:</p>
+    <ol>
+        <li><strong>Játék Állapotok Inicializálása:</strong> A játékos 1. négyzetből indul, és az 100. négyzet a célja.</li>
+        <li><strong>Adatok Előkészítése:</strong> A létrákat és a kígyókat egy szótárba (dictionary) töltjük fel, ahol a kulcsok a kezdő négyzetek, és az értékek a végpontok.</li>
+        <li><strong>Keresés:</strong> Szélességi keresést (BFS) alkalmazunk a lehető legkevesebb dobás elérésére. Minden lépésnél 1-től 6-ig terjedő dobásokat vizsgálunk.</li>
+        <li><strong>Átugrások Kezelése:</strong> Ha a játékos létrára lép, akkor azonnal a végpontjára ugrik. Ha kígyóra lép, akkor a kígyó farkához kerül.</li>
+        <li><strong>Befejezés:</strong> Ha elérjük a 100. négyzetet, a keresés befejeződik, és visszatérünk a dobások számával.</li>
+    </ol>
+
+    <h2>Funkció Kódja</h2>
+    <pre>
+<code>
+def quickestWayUp(ladders, snakes):
+    from collections import deque
+    
+    # Tábla inicializálása
+    board = {i: i for i in range(1, 101)}
+    
+    # Létrák és kígyók hozzáadása a táblához
+    for start, end in ladders:
+        board[start] = end
+    for start, end in snakes:
+        board[start] = end
+    
+    # Szélességi keresés indítása
+    queue = deque([(1, 0)])  # (aktuális négyzet, dobások száma)
+    visited = set()  # Meglátogatott négyzetek nyilvántartása
+    
+    while queue:
+        position, rolls = queue.popleft()
+        
+        # Ha elérjük a 100. négyzetet
+        if position == 100:
+            return rolls
+        
+        # Minden lehetséges dobás vizsgálata
+        for die in range(1, 7):
+            next_position = position + die
+            
+            if next_position <= 100:
+                next_position = board[next_position]  # Lépés a létra vagy kígyó hatására
+                
+                if next_position not in visited:
+                    visited.add(next_position)
+                    queue.append((next_position, rolls + 1))
+    
+    return -1  # Ha nincs megoldás
+</code>
+    </pre>
+
+    <h2>Példa Használat</h2>
+    <p>A következő példa bemenet és kimenet segíthet megérteni a működést:</p>
+    <pre>
+<code>
+Bemenet:
+2
+3
+32 62
+42 68
+12 98
+7
+95 13
+97 25
+93 37
+79 27
+75 19
+49 47
+67 17
+
+Kimenet:
+3
+5
+</code>
+    </pre>
+
+    <h2>Összegzés</h2>
+    <p>A megoldás célja a Snakes and Ladders játék minimális dobásainak meghatározása. A BFS algoritmus hatékonyan kezeli a létrák és kígyók hatását, biztosítva ezzel a gyors megoldást.</p>
+</body>
+</html>

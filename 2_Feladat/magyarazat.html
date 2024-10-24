@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jelszóellenőrző Rendszer - Dokumentáció</title>
+</head>
+<body>
+    <h1>Jelszóellenőrző Rendszer Magyarázata</h1>
+
+    <h2>Feladat Leírása</h2>
+    <p>A CuteKittens.com weboldalon minden felhasználónak egyedi jelszava van. A jelszóellenőrző rendszer elfogadja azokat a karakterláncokat is, amelyek több jelszó összefűzésével állnak elő, és ezek bármilyen sorrendben szerepelhetnek a bejelentkezési próbálkozásban. A cél, hogy meghatározzuk, egy adott <code>loginAttempt</code> karakterlánc előállítható-e a rendelkezésre álló jelszavak összefűzésével.</p>
+
+    <h2>Megoldás Módszertana</h2>
+    <p>A feladat dinamikus programozási megközelítéssel oldható meg, amely a probléma részproblémáira épül. Lépésről lépésre meghatározzuk, hogy egy adott részstring (a <code>loginAttempt</code> elejétől kezdve) előállítható-e az elérhető jelszavakból.</p>
+
+    <h3>1. Dinamikus programozás táblázat (dp) használata</h3>
+    <p>A megoldás egy <code>dp</code> tömböt használ, amely tárolja, hogy a <code>loginAttempt</code> egy adott részlete megoldható-e a jelszavakból. Kezdetben csak az üres string megoldható, amely a <code>dp[0]</code>-ban van tárolva.</p>
+    
+    <h3>2. Az algoritmus lépései</h3>
+    <ol>
+        <li>A jelszavakat végig ellenőrizzük, hogy illeszkednek-e a <code>loginAttempt</code> aktuális részéhez.</li>
+        <li>Ha találunk egyezést egy jelszóval, kiterjesztjük a megoldást azzal a jelszóval.</li>
+        <li>Ha a <code>loginAttempt</code> végére érünk, és megtaláljuk a jelszavakból felépített teljes karakterláncot, akkor az elfogadható.</li>
+        <li>Ha nem találunk megoldást, visszatérünk a "WRONG PASSWORD" üzenettel.</li>
+    </ol>
+
+    <h2>Megoldás Hatékonysága</h2>
+    <p>A dinamikus programozás jelentősen javítja az algoritmus hatékonyságát, mivel minden részproblémát csak egyszer oldunk meg, és a megoldást tároljuk a <code>dp</code> tömbben. Az időkomplexitás a <code>loginAttempt</code> hosszától és a jelszavak számától függ, így a legrosszabb esetben az algoritmus futási ideje <code>O(T * N * M)</code>, ahol <code>T</code> a tesztesetek száma, <code>N</code> a jelszavak száma, és <code>M</code> a bejelentkezési próbálkozás hossza.</p>
+
+    <h2>Példa</h2>
+    <h3>Bemenet:</h3>
+    <pre><code>3
+6
+because can do must we what
+wedowhatwemustbecausewecan
+2
+hello planet
+helloworld
+3
+ab abcd cd
+abcd
+    </code></pre>
+    
+    <h3>Kimenet:</h3>
+    <pre><code>we do what we must because we can
+WRONG PASSWORD
+ab cd
+    </code></pre>
+    
+    <h2>Megjegyzések</h2>
+    <ul>
+        <li>Az első tesztesetben a <code>wedowhatwemustbecausewecan</code> karakterlánc sikeresen előállítható a jelszavak sorozatából: <code>we do what we must because we can</code>.</li>
+        <li>A második tesztesetben nincs olyan jelszó-kombináció, amely előállítaná a <code>helloworld</code> karakterláncot, így a válasz <code>WRONG PASSWORD</code>.</li>
+        <li>A harmadik tesztesetben kétféleképpen is előállítható az <code>abcd</code> karakterlánc: <code>ab cd</code> vagy <code>abcd</code>, ezért a válasz <code>ab cd</code>.</li>
+    </ul>
+
+    <h2>Forráskód</h2>
+    <p>A megoldás forráskódja dinamikus programozási megközelítéssel készült, amely segít elkerülni a többszöri számításokat:</p>
+    <pre><code>def passwordCracker(passwords, loginAttempt):
+    dp = [None] * (len(loginAttempt) + 1)
+    dp[0] = []
+
+    for i in range(len(loginAttempt)):
+        if dp[i] is not None:
+            for password in passwords:
+                if loginAttempt[i:i + len(password)] == password:
+                    if i + len(password) <= len(loginAttempt):
+                        dp[i + len(password)] = dp[i] + [password]
+    
+    if dp[len(loginAttempt)] is not None:
+        return ' '.join(dp[len(loginAttempt)])
+    else:
+        return "WRONG PASSWORD"
+    </code></pre>
+    
+  
+
+</body>
+</html>

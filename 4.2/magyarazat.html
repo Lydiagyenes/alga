@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmus Megoldásának Dokumentációja</title>
+</head>
+<body>
+    <h1>Algoritmus Megoldásának Dokumentációja</h1>
+
+    <h2>Feladat Leírása</h2>
+    <p>
+        Egy irányítatlan gráfban <strong>N</strong> darab csomópont és <strong>M</strong> darab él található. Minden élhez tartozik egy egész szám típusú költség <strong>C<sub>i</sub></strong>.
+    </p>
+    <p>
+        Az útvonal büntetése az adott út minden élének költségének bitenkénti <strong>VAGY (OR)</strong> művelete. Azaz, ha egy út tartalmazza az <code>M<sub>1</sub></code>, <code>M<sub>2</sub></code>, ..., <code>M<sub>k</sub></code> éleket, akkor az útvonal büntetése: <code>C<sub>1</sub> OR C<sub>2</sub> OR ... OR C<sub>k</sub></code>.
+    </p>
+    <p>
+        A feladat az, hogy két adott csomópont <code>A</code> és <code>B</code> között találjuk meg a minimális büntetéssel járó útvonalat, és adjuk meg annak büntetését. Ha nincs elérhető út <code>A</code> és <code>B</code> között, adjuk vissza <code>-1</code>-et.
+    </p>
+
+    <h2>Megoldás Lépései</h2>
+    <ol>
+        <li><strong>Szomszédsági lista felépítése:</strong> Az összes él információját feldolgozzuk és egy szomszédsági listába rendezzük, ahol tároljuk az élek költségeit is.</li>
+        <li><strong>Optimalizált keresés Dijkstra-szerű módszerrel:</strong> Egy prioritási sort alkalmazunk, amely biztosítja, hogy minden csomóponthoz a minimális büntetéssel jussunk el. Az alapötlet az, hogy a lehető legkisebb büntetést (bitwise OR) alkalmazzuk, amikor csomópontról csomópontra haladunk.</li>
+        <li><strong>Büntetés frissítése:</strong> Az aktuális csomópont és a szomszédos csomópont közötti él költségét bitwise OR művelettel kombináljuk az eddigi büntetéssel. Ha az így kapott új büntetés kisebb, mint a korábban elért büntetés a szomszédos csomópontban, akkor azt frissítjük és a szomszédos csomópontot hozzáadjuk a prioritási sorhoz.</li>
+        <li><strong>Eredmény meghatározása:</strong> Ha az optimális útvonal megtalálható <code>A</code> és <code>B</code> között, akkor annak minimális büntetését adjuk vissza. Ha nincs ilyen út, akkor a visszatérési érték <code>-1</code> lesz.</li>
+    </ol>
+
+    <h2>Input Formátum</h2>
+    <ul>
+        <li>Az első sor két egész számot tartalmaz: <code>N</code> (csomópontok száma) és <code>M</code> (élek száma).</li>
+        <li>A következő <code>M</code> sor mindegyike három szóközzel elválasztott egész számot tartalmaz: <code>U<sub>i</sub></code>, <code>V<sub>i</sub></code> és <code>C<sub>i</sub></code>. Az <code>M<sub>i</sub></code> él <code>U<sub>i</sub></code> és <code>V<sub>i</sub></code> csomópontokat köti össze, költsége <code>C<sub>i</sub></code>.</li>
+        <li>Az utolsó sor két egész számot tartalmaz: <code>A</code> (kezdő csomópont) és <code>B</code> (cél csomópont).</li>
+    </ul>
+
+    <h2>Output Formátum</h2>
+    <p>
+        Adjuk meg a minimális büntetést az <code>A</code> és <code>B</code> közötti optimális útvonalra. Ha nincs út <code>A</code> és <code>B</code> között, akkor a kimenet <code>-1</code>.
+    </p>
+
+    <h2>Példa</h2>
+    <p><strong>Bemenet:</strong></p>
+    <pre>
+3 4
+1 2 1
+1 2 1000
+2 3 3
+1 3 100
+1 3
+    </pre>
+    <p><strong>Kimenet:</strong> <code>3</code></p>
+    <p><strong>Magyarázat:</strong> Az optimális útvonal <code>1 -&gt; 2 -&gt; 3</code>. Az első él költsége <code>1</code>, a másodiké <code>3</code>. Az útvonal büntetése <code>1 OR 3 = 3</code>, így a visszatérési érték <code>3</code>.</p>
+</body>
+</html>

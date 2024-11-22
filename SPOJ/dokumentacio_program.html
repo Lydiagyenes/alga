@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime1 - Prím Generátor</title>
+</head>
+<body>
+    <h1>Prime1 - Prím Generátor</h1>
+
+    <h2>Leírás</h2>
+    <p>
+        Peter prím számokat szeretne generálni a kriptoszisztémája számára. A feladatod, hogy generáld le az összes prím számot két adott szám között.
+    </p>
+
+    <h2>Bemenet</h2>
+    <p>
+        A bemenet első sorában található a tesztesetek száma, t (t <= 10). A következő t sor mindegyikében két számot tartalmaz, m és n (1 <= m <= n <= 1,000,000,000, n - m <= 100,000), amelyek egy intervallumot jelölnek. Az intervallumban lévő prím számokat kell generálni.
+    </p>
+
+    <h2>Kimenet</h2>
+    <p>
+        Minden tesztesethez írj ki minden prím számot, amely m és n között található, egy számot soronként. A tesztesetek között hagyj egy üres sort.
+    </p>
+
+    <h2>Példa</h2>
+    <pre>
+    Bemenet:
+    2
+    1 10
+    3 5
+
+    Kimenet:
+    2
+    3
+    5
+    7
+
+    3
+    5
+    </pre>
+
+    <h2>Magyarázat</h2>
+    <p>
+        Az első tesztesetben a [1, 10] intervallumban található prímszámok: 2, 3, 5 és 7.
+    </p>
+    <p>
+        A második tesztesetben a [3, 5] intervallumban található prímszámok: 3 és 5.
+    </p>
+
+    <h2>Algoritmus</h2>
+    <p>
+        A feladat megoldása a <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">szita algoritmus</a> (Sieve of Eratosthenes) és a <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Segmented_sieve">szegmentált szita</a> kombinálásával történik. A szita algoritmus minden számot osztályoz, hogy prím-e vagy sem. A szegmentált szita egy optimalizált módszer, amely nagy intervallumok esetén is gyorsan generálja a prím számokat.
+    </p>
+
+    <h2>Megoldás</h2>
+    <p>
+        A megoldás során először alkalmazzuk a szita algoritmust a kisebb intervallumokhoz. Ezután, ha a tartomány nagy, szegmentált szita módszerrel folytatjuk a prím számok generálását. A segédprogram folyamatosan karbantartja a prím számok listáját, és hatékonyan keres új prím számokat a megadott tartományban.
+    </p>
+
+    <h3>A kód működése</h3>
+    <pre>
+    def generate_primes(m, n):
+        # Segmented sieve algorithm
+        sieve = [True] * (n - m + 1)
+        primes = []
+        
+        # First, find primes up to sqrt(n)
+        limit = int(n**0.5) + 1
+        small_primes = simple_sieve(limit)
+
+        for prime in small_primes:
+            # Mark multiples of prime in the range [m, n]
+            start = max(prime*prime, (m + prime - 1) // prime * prime)
+            for j in range(start, n+1, prime):
+                sieve[j - m] = False
+
+        for i in range(m, n+1):
+            if sieve[i - m]:
+                primes.append(i)
+        return primes
+
+    def simple_sieve(limit):
+        sieve = [True] * (limit + 1)
+        sieve[0] = sieve[1] = False
+        primes = []
+        for i in range(2, limit+1):
+            if sieve[i]:
+                primes.append(i)
+                for j in range(i*i, limit+1, i):
+                    sieve[j] = False
+        return primes
+    </pre>
+
+    <h2>Korlátok</h2>
+    <p>
+        - 1 <= m <= n <= 1,000,000,000
+    </p>
+    <p>
+        - n - m <= 100,000
+    </p>
+    <p>
+        - 1 <= t <= 10
+    </p>
+
+    <h2>Megjegyzés</h2>
+    <p>
+        A feladat célja a prím számok gyors generálása nagy tartományokban is. A legjobb megoldás a szegmentált szita módszer alkalmazásával érhető el, amely lehetővé teszi a hatékony prím generálást anélkül, hogy a teljes intervallumot egyszerre tárolnunk kellene.
+    </p>
+</body>
+</html>
